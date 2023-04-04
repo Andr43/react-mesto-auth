@@ -1,0 +1,6 @@
+.popup-image__button {
+  position: absolute;
+  left: 101%;
+  bottom: 101%;
+  cursor: pointer;
+}

@@ -1,0 +1,6 @@
+.card__button_like_active{
+  width: 22px;
+  height: 19px;
+  opacity: 1;
+  background: url('../../../../../images/elements__heart_active.svg');
+}

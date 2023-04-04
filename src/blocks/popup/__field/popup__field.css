@@ -1,0 +1,20 @@
+.popup__field {
+  outline: none;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  margin: 0 8.372%;
+  margin-bottom: 35px;
+  padding: 0;
+  padding-bottom: 13px;
+  font-size: 14px;
+  line-height: 16.94px;
+}
+.popup__field:nth-child(2) {
+  margin-bottom: 53px;
+}
+
+@media screen and (min-width: 320px) and (max-width: 450px) {
+  .popup__field:nth-child(2) {
+    margin-bottom: 45px;
+  }
+}

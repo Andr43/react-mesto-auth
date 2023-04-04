@@ -1,0 +1,11 @@
+.card__button{
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+  border: 0;
+  outline: 0;
+  cursor: pointer;
+}
+.card__button:hover {
+  opacity: 0.5;
+}

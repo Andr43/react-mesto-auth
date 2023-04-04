@@ -1,0 +1,28 @@
+.profile {
+  position: relative;
+  color: #fff;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 50px;
+  grid-template-rows: 1fr 1fr;
+}
+@media screen and (max-width: 768px) {
+  .profile {
+    max-width: 382px;
+    grid-template-columns: 189px 1fr;
+    align-items: center;
+    margin: 0 auto;
+    margin-bottom: 36px;
+    grid-template-rows: 1fr 64px 85px;
+}
+}
+@media screen and (min-width: 320px) and (max-width: 450px) {
+  .profile {
+    max-width: 282px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 64px 85px;
+    align-items: center;
+    margin: 0 auto;
+    margin-bottom: 36px;
+  }
+}

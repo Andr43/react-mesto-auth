@@ -1,0 +1,13 @@
+.profile__button_edit-image{
+  visibility: hidden;
+  opacity: 0;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  left: 51px;
+  top: 48px;
+  width: 26px;
+  height: 26px;
+  background: url('../../../../images/profile__avatar_pencil.svg') no-repeat;
+  z-index: 1;
+}

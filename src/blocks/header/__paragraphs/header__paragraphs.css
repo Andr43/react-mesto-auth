@@ -1,0 +1,6 @@
+.header__paragraphs{
+  margin: 0;
+  padding: 0;
+  display: flex;
+  max-height: 25px;
+}

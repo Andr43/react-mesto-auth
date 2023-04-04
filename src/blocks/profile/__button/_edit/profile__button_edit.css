@@ -1,0 +1,47 @@
+.profile__button_edit {
+  border: 1px solid #fff;
+  margin-bottom: 7px;
+  margin-left: 15px;
+  width: 24px;
+  height: 24px;
+  grid-column-start: 2;
+  grid-column-end: 2;
+  grid-row-start: 1;
+  grid-row-end: 2;
+  align-self: end;
+  background: url("../../../../images/profile__edit_button.svg") 50% 50%
+    no-repeat;
+}
+.profile__button_edit:hover {
+  opacity: 0.6;
+}
+@media screen and (max-width: 768px) {
+  .profile__button_edit {
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    margin-left: 75px;
+    margin-top: 8px;
+    justify-self: center;
+    align-self: flex-start;
+    grid-column-start: 2;
+    grid-column-end: 2;
+    grid-row-start: 2;
+    grid-row-end: 2;
+  }
+}
+@media screen and (min-width: 320px) and (max-width: 450px) {
+  .profile__button_edit {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    margin-left: 85px;
+    margin-top: 9px;
+    justify-self: center;
+    background-size: 7.5px 7.5px;
+    grid-column-start: 2;
+    grid-column-end: 2;
+    grid-row-start: 2;
+    grid-row-end: 2;
+  }
+}
