@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import profileAvatar from "../images/profile__avatar.jpg";
 import Header from "./Header";
 import Main from "./Main";
@@ -8,6 +8,7 @@ import Login from "./Login";
 import Register from "./Register";
 import ProtectedRoute from "./ProtectedRoute";
 import InfoTooltip from "./InfoTooltip";
+import * as userAuth from '../utils/userAuth';
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
@@ -30,6 +31,8 @@ function App() {
   });
   const [cards, setCards] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
+  const [registeredIn, setRegisteredIn] = useState(false);
+  const navigate = useNavigate();
 
   function showError(err) {
     console.error(err);
@@ -62,6 +65,7 @@ function App() {
       .catch((err) => {
         showError(err);
       });
+      handleTokenCheck();
   }, []);
 
   function handleCardLike(card) {
@@ -124,12 +128,14 @@ function App() {
     setIsPopupDeleteCardOpened(!isPopupDeleteCardOpened);
     document.addEventListener("keydown", handleEscClose);
   }
-  function handleShowAuthorisationResult() {
-    setIsPopupResultInfoOpened(!isPopupResultInfoOpened);
-    document.addEventListener("keydown", handleEscClose);
-  }
+
   function handleCardClick({ name, link }) {
     setSelectedCard({ name, link });
+    document.addEventListener("keydown", handleEscClose);
+  }
+
+  function handleShowAuthorisationResult() {
+    setIsPopupResultInfoOpened(true);
     document.addEventListener("keydown", handleEscClose);
   }
 
@@ -202,6 +208,20 @@ function App() {
   function handleDeleteCardSubmit() {
     setIsPopupDeleteCardOpened(false);
   }
+ 
+   const handleTokenCheck = () => {
+     if(localStorage.getItem('token')){
+       const token = localStorage.getItem('token');
+       if(token){
+         userAuth.getContent(token).then((res) => {
+           if(res){
+             setLoggedIn(true);
+             navigate('/', {replace: true})
+           }
+         })
+       }
+     }
+    }
 
 
   return (
@@ -223,9 +243,8 @@ function App() {
         </CurrentCardContext.Provider>
         <Footer />
         </CurrentUserContext.Provider>}/>} />
-      <Route path='/sign-in' element={<Login />} />
-      <Route path='/sign-up' element={<Register />} />
-      <Route path='/sign' element={<InfoTooltip />} />
+      <Route path='/sign-in' element={<Login isLoggedIn={setLoggedIn} />} />
+      <Route path='/sign-up' element={<Register setRegisteredIn={setRegisteredIn} onSubmitMessage={handleShowAuthorisationResult} />} />
       </Routes>
       <CurrentUserContext.Provider value={currentUser}>
         <EditProfilePopup
@@ -257,6 +276,7 @@ function App() {
       <InfoTooltip
           isOpen={isPopupResultInfoOpened}
           loggedIn={loggedIn}
+          registeredIn={registeredIn}
           onClose={closeAllPopups}
         />
     </>
