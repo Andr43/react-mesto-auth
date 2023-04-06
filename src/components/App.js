@@ -8,7 +8,7 @@ import Login from "./Login";
 import Register from "./Register";
 import ProtectedRoute from "./ProtectedRoute";
 import InfoTooltip from "./InfoTooltip";
-import * as userAuth from '../utils/userAuth';
+import * as userAuth from "../utils/userAuth";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
@@ -65,7 +65,7 @@ function App() {
       .catch((err) => {
         showError(err);
       });
-      handleTokenCheck();
+    handleTokenCheck();
   }, []);
 
   function handleCardLike(card) {
@@ -163,7 +163,7 @@ function App() {
       setIsPopupAddPlaceOpened(isPopupAddPlaceOpened);
       setIsPopupEditImageOpened(isPopupEditImageOpened);
       setIsPopupDeleteCardOpened(isPopupDeleteCardOpened);
-      setIsPopupResultInfoOpened(isPopupResultInfoOpened)
+      setIsPopupResultInfoOpened(isPopupResultInfoOpened);
       setSelectedCard(selectedCard);
     }
 
@@ -208,43 +208,69 @@ function App() {
   function handleDeleteCardSubmit() {
     setIsPopupDeleteCardOpened(false);
   }
- 
-   const handleTokenCheck = () => {
-     if(localStorage.getItem('token')){
-       const token = localStorage.getItem('token');
-       if(token){
-         userAuth.getContent(token).then((res) => {
-           if(res){
-             setLoggedIn(true);
-             navigate('/', {replace: true})
-           }
-         })
-       }
-     }
-    }
 
+  const handleTokenCheck = () => {
+    if (localStorage.getItem("token")) {
+      const token = localStorage.getItem("token");
+      if (token) {
+        userAuth.getContent(token).then((res) => {
+          if (res) {
+            setLoggedIn(true);
+            navigate("/", { replace: true });
+          }
+        });
+      }
+    }
+  };
 
   return (
     <>
-      <Header loggedIn={loggedIn} />
+      <Header loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
       <Routes>
-      <Route path='/' element={<ProtectedRoute loggedIn={loggedIn} element={<CurrentUserContext.Provider value={currentUser}>
-      <CurrentCardContext.Provider value={cards}>
-          <Main
-            onEditProfile={handleEditProfileClick}
-            onAddPlace={handleAddPlaceClick}
-            onEditAvatar={handleEditAvatarClick}
-            onCardImageClick={handleCardClick}
-            onLikeClick={handleCardLike}
-            onDeleteButtonClick={handleDeleteCardClick}
-            onDeleteCard={handleDeleteCard}
-            cards={cards}
-          />
-        </CurrentCardContext.Provider>
-        <Footer />
-        </CurrentUserContext.Provider>}/>} />
-      <Route path='/sign-in' element={<Login isLoggedIn={setLoggedIn} />} />
-      <Route path='/sign-up' element={<Register setRegisteredIn={setRegisteredIn} onSubmitMessage={handleShowAuthorisationResult} />} />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute
+              loggedIn={loggedIn}
+              element={
+                <CurrentUserContext.Provider value={currentUser}>
+                  <CurrentCardContext.Provider value={cards}>
+                    <Main
+                      onEditProfile={handleEditProfileClick}
+                      onAddPlace={handleAddPlaceClick}
+                      onEditAvatar={handleEditAvatarClick}
+                      onCardImageClick={handleCardClick}
+                      onLikeClick={handleCardLike}
+                      onDeleteButtonClick={handleDeleteCardClick}
+                      onDeleteCard={handleDeleteCard}
+                      cards={cards}
+                    />
+                  </CurrentCardContext.Provider>
+                  <Footer />
+                </CurrentUserContext.Provider>
+              }
+            />
+          }
+        />
+        <Route
+          path="/sign-in"
+          element={
+            <Login
+              setLoggedIn={setLoggedIn}
+              onClose={closeAllPopups}
+              onSubmitMessage={handleShowAuthorisationResult}
+            />
+          }
+        />
+        <Route
+          path="/sign-up"
+          element={
+            <Register
+              setRegisteredIn={setRegisteredIn}
+              onSubmitMessage={handleShowAuthorisationResult}
+            />
+          }
+        />
       </Routes>
       <CurrentUserContext.Provider value={currentUser}>
         <EditProfilePopup
@@ -274,11 +300,11 @@ function App() {
         onMouseDown={closeAllPopups}
       />
       <InfoTooltip
-          isOpen={isPopupResultInfoOpened}
-          loggedIn={loggedIn}
-          registeredIn={registeredIn}
-          onClose={closeAllPopups}
-        />
+        isOpen={isPopupResultInfoOpened}
+        loggedIn={loggedIn}
+        registeredIn={registeredIn}
+        onClose={closeAllPopups}
+      />
     </>
   );
 }
