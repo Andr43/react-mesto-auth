@@ -1,13 +1,11 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import * as userAuth from "../utils/userAuth";
 
 function Register(props) {
   const [formValue, setFormValue] = useState({
     email: "",
     password: "",
   });
-  const navigate = useNavigate();
+  const formLogin = document.querySelector(".auth__form");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,28 +16,9 @@ function Register(props) {
     });
   };
 
-  const handleSubmit = (e) => {
+  const formSubmit = (e) => {
     e.preventDefault();
-
-    userAuth
-      .register(formValue.email, formValue.password)
-      .then((res) => {
-        if (res.data) {
-          props.setRegisteredIn(true);
-          props.onSubmitMessage();
-          navigate("/sign-in", { replace: true });
-        }
-        if (!res.data) {
-          props.setRegisteredIn(false);
-          props.onSubmitMessage();
-          return;
-        }
-      })
-      .catch((err) => {
-        props.setRegisteredIn(false);
-        props.onSubmitMessage();
-        return;
-      });
+    props.onRegisterSubmit(formValue.email, formValue.password, formLogin);
   };
 
   return (
@@ -50,7 +29,7 @@ function Register(props) {
         name=""
         action="#"
         id=""
-        onSubmit={handleSubmit}
+        onSubmit={formSubmit}
         noValidate
       >
         <input
@@ -62,6 +41,7 @@ function Register(props) {
           minLength="2"
           maxLength="40"
           onChange={handleChange}
+          value={formValue.email}
           required
         />
         <span className="auth__error email-error"></span>
@@ -74,6 +54,7 @@ function Register(props) {
           minLength="2"
           maxLength="30"
           onChange={handleChange}
+          value={formValue.password}
           required
         />
         <span className="auth__error password-error"></span>{" "}

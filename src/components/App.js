@@ -171,26 +171,34 @@ function App() {
   }
 
   function handleUpdateUser({ name, about }) {
-    api.updateUserInfo(name, about).catch((err) => {
-      showError(err);
-    });
-    setCurrentUser({
-      ...currentUser,
-      name: name,
-      about: about,
-    });
-    setIsPopupEditOpened(false);
+    api
+      .updateUserInfo(name, about)
+      .then((res) => {
+        setCurrentUser({
+          ...currentUser,
+          name: name,
+          about: about,
+        });
+        setIsPopupEditOpened(false);
+      })
+      .catch((err) => {
+        showError(err);
+      });
   }
 
   function handleUpdateAvatar({ avatar }) {
-    api.updateUserImage(avatar).catch((err) => {
-      showError(err);
-    });
-    setCurrentUser({
-      ...currentUser,
-      avatar: avatar,
-    });
-    setIsPopupEditImageOpened(false);
+    api
+      .updateUserImage(avatar)
+      .then((res) => {
+        setCurrentUser({
+          ...currentUser,
+          avatar: avatar,
+        });
+        setIsPopupEditImageOpened(false);
+      })
+      .catch((err) => {
+        showError(err);
+      });
   }
 
   function handleAddPlaceSubmit({ name, link }) {
@@ -198,11 +206,11 @@ function App() {
       .addNewCard(name, link)
       .then((newCard) => {
         setCards([newCard, ...cards]);
+        setIsPopupAddPlaceOpened(false);
       })
       .catch((err) => {
         showError(err);
       });
-    setIsPopupAddPlaceOpened(false);
   }
 
   function handleDeleteCardSubmit() {
@@ -213,14 +221,68 @@ function App() {
     if (localStorage.getItem("token")) {
       const token = localStorage.getItem("token");
       if (token) {
-        userAuth.getContent(token).then((res) => {
-          if (res) {
-            setLoggedIn(true);
-            navigate("/", { replace: true });
-          }
-        });
+        userAuth
+          .getContent(token)
+          .then((res) => {
+            if (res) {
+              setLoggedIn(true);
+              navigate("/", { replace: true });
+            }
+          })
+          .catch((err) => {
+            showError(err);
+          });
       }
     }
+  };
+
+  const onLoginSubmit = (email, password, form) => {
+    if (!email || !password) {
+      return;
+    }
+    userAuth
+      .authorize(email, password)
+      .then((data) => {
+        if (data.token) {
+          form.reset();
+          handleShowAuthorisationResult();
+          setLoggedIn(true);
+          navigate("/", { replace: true });
+        }
+        if (!data.token) {
+          handleShowAuthorisationResult();
+          setLoggedIn(false);
+        }
+      })
+      .catch((err) => {
+        showError(err);
+        handleShowAuthorisationResult();
+        setLoggedIn(false);
+      });
+  };
+
+  const onRegisterSubmit = (email, password, form) => {
+    userAuth
+      .register(email, password)
+      .then((res) => {
+        if (res.data) {
+          form.reset();
+          setRegisteredIn(true);
+          handleShowAuthorisationResult();
+          navigate("/sign-in", { replace: true });
+        }
+        if (!res.data) {
+          setRegisteredIn(false);
+          handleShowAuthorisationResult();
+          return;
+        }
+      })
+      .catch((err) => {
+        showError(err);
+        setRegisteredIn(false);
+        handleShowAuthorisationResult();
+        return;
+      });
   };
 
   return (
@@ -255,21 +317,12 @@ function App() {
         <Route
           path="/sign-in"
           element={
-            <Login
-              setLoggedIn={setLoggedIn}
-              onClose={closeAllPopups}
-              onSubmitMessage={handleShowAuthorisationResult}
-            />
+            <Login onLoginSubmit={onLoginSubmit} onClose={closeAllPopups} />
           }
         />
         <Route
           path="/sign-up"
-          element={
-            <Register
-              setRegisteredIn={setRegisteredIn}
-              onSubmitMessage={handleShowAuthorisationResult}
-            />
-          }
+          element={<Register onRegisterSubmit={onRegisterSubmit} />}
         />
       </Routes>
       <CurrentUserContext.Provider value={currentUser}>

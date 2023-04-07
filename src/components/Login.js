@@ -1,13 +1,11 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import * as userAuth from "../utils/userAuth";
 
 function Login(props) {
   const [formValue, setFormValue] = useState({
     email: "",
     password: "",
   });
-  const navigate = useNavigate();
+  const formLogin = document.querySelector(".auth__form");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,30 +16,11 @@ function Login(props) {
     });
   };
 
-  const handleSubmit = (e) => {
+  const formSubmit = (e) => {
     e.preventDefault();
-    if (!formValue.email || !formValue.password) {
-      return;
-    }
-    userAuth
-      .authorize(formValue.email, formValue.password)
-      .then((data) => {
-        if (data.token) {
-          setFormValue({ username: "", password: "" });
-          props.onSubmitMessage();
-          props.setLoggedIn(true);
-          navigate("/", { replace: true });
-        }
-        if (!data.token) {
-          props.onSubmitMessage();
-          props.setLoggedIn(false);
-        }
-      })
-      .catch((err) => {
-        props.setLoggedIn(false);
-        props.onSubmitMessage();
-      });
+    props.onLoginSubmit(formValue.email, formValue.password, formLogin);
   };
+
   return (
     <div className="auth">
       <h3 className="auth__heading">Вход</h3>
@@ -50,7 +29,7 @@ function Login(props) {
         name=""
         action="#"
         id=""
-        onSubmit={handleSubmit}
+        onSubmit={formSubmit}
         noValidate
       >
         <input
@@ -62,6 +41,7 @@ function Login(props) {
           minLength="2"
           maxLength="40"
           onChange={handleChange}
+          value={formValue.email}
           required
         />
         <span className="auth__error email-error"></span>
@@ -74,6 +54,7 @@ function Login(props) {
           minLength="2"
           maxLength="30"
           onChange={handleChange}
+          value={formValue.password}
           required
         />
         <span className="auth__error password-error"></span>{" "}
