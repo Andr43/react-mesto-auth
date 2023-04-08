@@ -250,14 +250,14 @@ function App() {
           navigate("/", { replace: true });
         }
         if (!data.token) {
-          handleShowAuthorisationResult();
           setLoggedIn(false);
+          handleShowAuthorisationResult();
         }
       })
       .catch((err) => {
         showError(err);
-        handleShowAuthorisationResult();
         setLoggedIn(false);
+        handleShowAuthorisationResult();
       });
   };
 
