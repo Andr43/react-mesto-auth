@@ -31,7 +31,7 @@
 
 Инструкция по установке:
 
-git clone https://github.com/Andr43/mesto.git
+git clone https://github.com/Andr43/react-mesto-auth.git
 
 cd mesto
 
