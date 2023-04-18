@@ -11,3 +11,21 @@
   background: url('../../../../images/profile__avatar_pencil.svg') no-repeat;
   z-index: 1;
 }
+
+@media screen and (max-width: 768px) {
+  .profile__button_edit-image {
+    visibility: hidden;
+  opacity: 0;
+    left: 60px;
+    top: 60px;
+  }
+}
+@media screen and (min-width: 320px) and (max-width: 450px) {
+  .profile__button_edit-image {
+    visibility: hidden;
+  opacity: 0;
+    left: 50px;
+    top: 50px;
+  }
+}
+

@@ -24,6 +24,7 @@ function App() {
   const [isPopupEditImageOpened, setIsPopupEditImageOpened] = useState(false);
   const [isPopupDeleteCardOpened, setIsPopupDeleteCardOpened] = useState(false);
   const [isPopupResultInfoOpened, setIsPopupResultInfoOpened] = useState(false);
+  const [isMouseOverAvatar, setIsMouseOverAvatar] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
   const [currentUser, setCurrentUser] = useState({
     name: "Жак-Ив Кусто",
@@ -122,6 +123,7 @@ function App() {
 
   function handleEditAvatarClick() {
     setIsPopupEditImageOpened(!isPopupEditImageOpened);
+    setIsMouseOverAvatar(false);
     document.addEventListener("keydown", handleEscClose);
   }
   function handleDeleteCardClick() {
@@ -301,6 +303,8 @@ function App() {
                       onEditProfile={handleEditProfileClick}
                       onAddPlace={handleAddPlaceClick}
                       onEditAvatar={handleEditAvatarClick}
+                      setIsMouseOverAvatar={setIsMouseOverAvatar}
+                      isMouseOverAvatar={isMouseOverAvatar}
                       onCardImageClick={handleCardClick}
                       onLikeClick={handleCardLike}
                       onDeleteButtonClick={handleDeleteCardClick}

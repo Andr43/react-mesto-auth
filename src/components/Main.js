@@ -1,10 +1,9 @@
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import Card from "./Card";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function Main(props) {
-  const [isMouseOverAvatar, setIsMouseOverAvatar] = useState(false);
-  const classNameEditImage = `${isMouseOverAvatar ? "visible" : "invisible"}`;
+  const classNameEditImage = `${props.isMouseOverAvatar ? "visible" : "invisible"}`;
   const userInfo = useContext(CurrentUserContext);
 
   function handleImageClick(card) {
@@ -20,7 +19,7 @@ function Main(props) {
   }
 
   function hoverUserImage() {
-    setIsMouseOverAvatar(!isMouseOverAvatar);
+    props.setIsMouseOverAvatar(!props.isMouseOverAvatar);
   }
 
   function handleDeleteButtonClick() {
